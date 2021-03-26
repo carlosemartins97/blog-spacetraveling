@@ -6,6 +6,8 @@ import { getPrismicClient } from '../services/prismic';
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 
+import Link from 'next/link'
+
 import {FiCalendar, FiUser} from 'react-icons/fi';
 
 import Prismic from '@prismicio/client'
@@ -54,7 +56,8 @@ export default function Home({ postsPagination }: HomeProps) {
         <div className={`${styles.content} ${commonStyles.content}`}>
           {
             results.map(post => (
-                <a key={post.uid}>
+                <Link href={`/post/${post.uid}`} key={post.uid}>
+                  <a>
                   <h1> {post.data.title} </h1>
                   <p>{post.data.subtitle}</p>
                   <div className={commonStyles.postInfo}>
@@ -62,6 +65,7 @@ export default function Home({ postsPagination }: HomeProps) {
                     <span><FiUser />{post.data.author}</span>
                   </div>
                 </a>
+                </Link>
             ))
           }
 
