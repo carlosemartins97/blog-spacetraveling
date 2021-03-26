@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { Head } from 'next/document';
+import Head from 'next/Head';
 import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
 import Header from '../../components/Header';
 
@@ -9,7 +9,6 @@ import { getPrismicClient } from '../../services/prismic';
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
-import { RichText } from 'prismic-dom';
 
 interface Post {
   first_publication_date: string | null;
@@ -34,10 +33,11 @@ interface PostProps {
 
 export default function Post({post}: PostProps) {
 
-  console.log(post.data.content)
-
   return (
     <>
+      <Head>
+        <title>{`${post.data.title} | spacetraveling`}</title>
+      </Head>
       <Header />
       <main className={`${commonStyles.container}`}>
         <img src={post.data.banner.url} alt="banner" className={styles.banner}/>

@@ -16,6 +16,7 @@ import { RichText } from 'prismic-dom';
 import {format} from 'date-fns'
 import ptBR from 'date-fns/esm/locale/pt-BR/index.js';
 import { useEffect, useState } from 'react';
+import Head from 'next/head';
 
 interface Post {
   uid?: string;
@@ -51,6 +52,9 @@ export default function Home({ postsPagination }: HomeProps) {
 
   return (
     <>
+      <Head>
+        <title>spacetraveling</title>
+      </Head>
       <Header />
       <main className={`${commonStyles.container}`}>
         <div className={`${styles.content} ${commonStyles.content}`}>
