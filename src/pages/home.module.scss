@@ -1,13 +1,4 @@
-.container {
-    width: 100%;
-}
-
-.homeContent {
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 0 2rem;
-
-    text-align: justify;
+.content {
 
     h1 {
         font-size: 1.75rem;
@@ -37,6 +28,8 @@
             margin-top: 3rem;
         }
 
+        
+
         &:hover h1 {
             color: var(--pink-500);
         }
@@ -44,22 +37,24 @@
 
 }
 
-.postInfo {
-    font-size: 0.875rem;
-    line-height: 1rem;
-    font-weight: 400;
-    color: var(--gray-500);
+.loadPostsButton {
+    margin-top: 4rem;
+    border: 0;
+    background: transparent;
+    color: var(--pink-500);
+    font-weight: 600;
 
-    display: flex;
-    align-items: center;
-    
-    time + span {
-        margin-left: 2rem;
-    }
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: 0.2s;
 
-    time, span {
-        :first-child {
-            margin-right: 0.625rem;
-        }
+    -webkit-text-decoration-color: transparent;
+    -moz-text-decoration-color: transparent;
+
+    &:hover {
+        text-decoration-color: var(--pink-500);
+
+        -webkit-text-decoration-color: var(--pink-500);
+        -moz-text-decoration-color: var(--pink-500);
     }
 }

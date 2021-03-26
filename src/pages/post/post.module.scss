@@ -1,1 +1,32 @@
-// TODO
+.banner {
+    width: 100%;
+}
+
+.content {
+    margin: 5rem auto;
+
+    h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    > div {
+        color: var(--gray-500);
+    }
+
+    h2 {
+        margin: 3rem 0;
+        font-size: 2rem;
+    }
+
+    p {
+        line-height: 140%;
+        font-weight: 400;
+        color: var(--gray-500);
+
+        span {
+            color: var(--pink-500);
+        }
+    }
+}

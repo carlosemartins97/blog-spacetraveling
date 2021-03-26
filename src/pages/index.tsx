@@ -13,6 +13,7 @@ import { RichText } from 'prismic-dom';
 
 import {format} from 'date-fns'
 import ptBR from 'date-fns/esm/locale/pt-BR/index.js';
+import { useEffect, useState } from 'react';
 
 interface Post {
   uid?: string;
@@ -37,25 +38,46 @@ export default function Home({ postsPagination }: HomeProps) {
   
   const { results, next_page } = postsPagination;
 
-  console.log(results)
+  async function handleLoadPosts() {
+    try {
+      
+
+    } catch {
+      throw new Error('Não foi possível carregar mais postagens.')
+    }
+  }
 
   return (
     <>
       <Header />
-      <main className={styles.container}>
-        <div className={styles.homeContent}>
-       {
-         results.map(post => (
-            <a key={post.uid}>
-              <h1> {post.data.title} </h1>
-              <p>{post.data.subtitle}</p>
-              <div className={styles.postInfo}>
-                <time><FiCalendar />{post.first_publication_date}</time>
-                <span><FiUser />{post.data.author}</span>
-              </div>
-            </a>
-         ))
-       }
+      <main className={`${commonStyles.container}`}>
+        <div className={`${styles.content} ${commonStyles.content}`}>
+          {
+            results.map(post => (
+                <a key={post.uid}>
+                  <h1> {post.data.title} </h1>
+                  <p>{post.data.subtitle}</p>
+                  <div className={commonStyles.postInfo}>
+                    <time><FiCalendar />{post.first_publication_date}</time>
+                    <span><FiUser />{post.data.author}</span>
+                  </div>
+                </a>
+            ))
+          }
+
+          {
+            next_page 
+            ? (
+              <button 
+            type="button"
+            className={styles.loadPostsButton}
+            onClick={handleLoadPosts}
+          >
+            Carregar mais posts
+          </button>
+            )
+            : null
+          }
         
         </div>
       </main>
@@ -74,7 +96,7 @@ export const getStaticProps = async () => {
     }
   )
 
-  const next_page = postsResponse.next_page;
+  const { next_page } = postsResponse;
 
   const results = postsResponse.results.map(post => {
     return {
@@ -95,8 +117,8 @@ export const getStaticProps = async () => {
     props: {
       postsPagination: {
         results,
-        next_page
+        next_page,
       },
-    }
+    },
   }
 };
