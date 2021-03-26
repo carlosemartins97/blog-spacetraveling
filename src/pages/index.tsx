@@ -89,14 +89,14 @@ export default function Home({ postsPagination }: HomeProps) {
   )
 }
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient();
 
   const postsResponse = await prismic.query([
     Prismic.predicates.at('document.type', 'publication')
   ], {
       fetch: ['publication.title', 'publication.subtitle', 'publication.author'],
-      pageSize:2,
+      pageSize:100,
     }
   )
 
@@ -124,5 +124,6 @@ export const getStaticProps = async () => {
         next_page,
       },
     },
+    revalidate: 60 * 60, // 1 hour
   }
 };

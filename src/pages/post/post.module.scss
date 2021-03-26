@@ -14,15 +14,19 @@
     > div {
         color: var(--gray-500);
     }
+}
 
+.post {
     h2 {
         margin: 3rem 0;
         font-size: 2rem;
+        color: var(--text); 
     }
 
     p {
         line-height: 140%;
         font-weight: 400;
+        margin: 1.5rem auto;
         color: var(--gray-500);
 
         span {
