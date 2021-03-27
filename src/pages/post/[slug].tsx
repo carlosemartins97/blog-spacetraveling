@@ -33,6 +33,9 @@ interface PostProps {
 
 export default function Post({post}: PostProps) {
 
+  let timeToRead = 0
+  post.data.content.forEach(item => item.body.forEach(paragraph => timeToRead++));
+
   return (
     <>
       <Head>
@@ -47,7 +50,7 @@ export default function Post({post}: PostProps) {
           <div className={commonStyles.postInfo}>
             <time><FiCalendar />{post.first_publication_date}</time>
             <span><FiUser />{post.data.author}</span>
-            <time><FiClock />4 min</time>
+            <time><FiClock />{Math.round(timeToRead/2)} min</time>
           </div>
 
           {
@@ -56,7 +59,7 @@ export default function Post({post}: PostProps) {
                 <h2>{item.heading}</h2>
 
                 {item.body.map(paragraph => (
-                    <p>{paragraph.text}</p>
+                    <p key={Math.random()}>{paragraph.text}</p>
                 ))}
               </div>
             ))
