@@ -14,7 +14,7 @@ import Prismic from '@prismicio/client'
 
 import {format} from 'date-fns'
 import { useEffect, useState } from 'react';
-import Head from 'next/head';
+import Head from 'next/Head';
 
 interface Post {
   uid?: string;
@@ -124,8 +124,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const { next_page } = postsResponse;
 
-  console.log(postsResponse);
-
   const results = postsResponse.results.map(post => {
     return {
       uid: post.uid,
@@ -148,7 +146,7 @@ export const getStaticProps: GetStaticProps = async () => {
         next_page,
       },
     },
-    revalidate: 60 * 60, // 1 hour
+    revalidate: 1, // 1 hour
   }
 };
 
