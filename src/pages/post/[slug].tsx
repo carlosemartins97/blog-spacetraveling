@@ -6,6 +6,7 @@ import Header from '../../components/Header';
 import { format } from 'date-fns'
 
 import { getPrismicClient } from '../../services/prismic';
+import Prismic from '@prismicio/client'
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
@@ -82,13 +83,19 @@ export default function Post({ post }: PostProps) {
 }
 
 export const getStaticPaths = async () => {
-  // const prismic = getPrismicClient();
-  // const posts = await prismic.query();
+  const prismic = getPrismicClient();
+  const posts = await prismic.query(
+    Prismic.predicates.at('document.id', 'YFzN_RIAACIAJVbL'),
+  );
 
-  // TODO
+  console.log(posts.results[0].uid);
   return {
-    paths: [],
-    fallback: 'blocking'
+    paths: [
+      {params: {
+        slug: posts.results[0].uid
+      }}
+    ],
+    fallback: true,
   }
 };
 
@@ -98,7 +105,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('publication', String(slug), {});
 
-  console.log(response.data.content)
 
   const post = {
     first_publication_date: format(
@@ -119,6 +125,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       post
     },
-    revalidate: 60 * 60, // 1 hour
+    revalidate: 1, // 1 hour
   }
 };
