@@ -13,6 +13,9 @@ import {FiCalendar, FiUser} from 'react-icons/fi';
 import Prismic from '@prismicio/client'
 
 import {format} from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR';
+
+
 import { useEffect, useState } from 'react';
 import Head from 'next/Head';
 
@@ -51,7 +54,7 @@ export default function Home({ postsPagination }: HomeProps) {
               uid: item.uid,
               first_publication_date: format(
                 new Date(item.first_publication_date),
-                'dd LLL yyyy'
+                'dd MMM yyyy', {locale: ptBR}
               ),
               data: {
                 title: item.data.title,
@@ -84,7 +87,14 @@ export default function Home({ postsPagination }: HomeProps) {
                     <h1> {post.data.title} </h1>
                     <p>{post.data.subtitle}</p>
                     <div className={commonStyles.postInfo}>
-                      <time><FiCalendar />{post.first_publication_date}</time>
+                      <time><FiCalendar />
+                        {
+                          format(
+                            new Date(post.first_publication_date),
+                            'dd MMM yyyy', {locale: ptBR}
+                          )
+                        }
+                      </time>
                       <span><FiUser />{post.data.author}</span>
                     </div>
                   </a>
@@ -127,10 +137,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const results = postsResponse.results.map(post => {
     return {
       uid: post.uid,
-      first_publication_date: format(
-        new Date(post.first_publication_date),
-        'dd LLL yyyy'
-      ),
+      first_publication_date: post.first_publication_date,
       data: {
         title: post.data.title,
         subtitle: post.data.subtitle,

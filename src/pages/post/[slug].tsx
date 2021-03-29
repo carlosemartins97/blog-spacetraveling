@@ -4,6 +4,7 @@ import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
 import Header from '../../components/Header';
 
 import { format } from 'date-fns'
+import ptBr from 'date-fns/locale/pt-BR';
 
 import { getPrismicClient } from '../../services/prismic';
 import Prismic from '@prismicio/client'
@@ -56,7 +57,11 @@ export default function Post({ post }: PostProps) {
               <h1>{post.data.title}</h1>
 
               <div className={commonStyles.postInfo}>
-                <time><FiCalendar />{post.first_publication_date}</time>
+                <time><FiCalendar />{
+                format(
+                  new Date(post.first_publication_date),
+                  'dd MMM yyyy', {locale: ptBr}
+                )}</time>
                 <span><FiUser />{post.data.author}</span>
                 <time><FiClock />{Math.round(timeToRead / 2)} min</time>
               </div>
@@ -86,6 +91,7 @@ export const getStaticPaths = async () => {
   const prismic = getPrismicClient();
   const posts = await prismic.query(
     Prismic.predicates.at('document.id', 'YFzN_RIAACIAJVbL'),
+
   );
 
   console.log(posts.results[0].uid);
@@ -107,10 +113,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 
   const post = {
-    first_publication_date: format(
-      new Date(response.first_publication_date),
-      'dd LLL yyyy'
-    ),
+    first_publication_date: response.first_publication_date,
     data: {
       title: response.data.title,
       banner: {
