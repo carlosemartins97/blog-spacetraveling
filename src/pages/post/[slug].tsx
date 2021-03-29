@@ -12,6 +12,7 @@ import Prismic from '@prismicio/client'
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import { useRouter } from 'next/router';
+import { RichText } from 'prismic-dom';
 
 interface Post {
   first_publication_date: string | null;
@@ -31,19 +32,17 @@ interface Post {
 }
 
 interface PostProps {
-  post: Post;
+  post?: Post;
 }
 
 export default function Post({ post }: PostProps) {
   const router = useRouter()
 
-  let timeToRead = 0
-  post.data.content.forEach(item => item.body.forEach(paragraph => timeToRead++));
 
   return (
     <>
       <Head>
-        <title>{`${post.data.title} | spacetraveling`}</title>
+        <title>{`${post?.data.title} | spacetraveling`}</title>
       </Head>
       <Header />
       <main className={`${commonStyles.container}`}>
@@ -63,7 +62,7 @@ export default function Post({ post }: PostProps) {
                   'dd MMM yyyy', {locale: ptBr}
                 )}</time>
                 <span><FiUser />{post.data.author}</span>
-                <time><FiClock />{Math.round(timeToRead / 2)} min</time>
+                <time><FiClock />4 min</time>
               </div>
 
               {
@@ -87,23 +86,29 @@ export default function Post({ post }: PostProps) {
   )
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const prismic = getPrismicClient();
   const posts = await prismic.query(
-    Prismic.predicates.at('document.id', 'YFzN_RIAACIAJVbL'),
-
+    [Prismic.predicates.at('document.type', 'publication')],
+    {
+      pageSize: 5,
+    }
   );
 
-  console.log(posts.results[0].uid);
+  const postArray = await posts.results.map(post => (
+      { 
+        params: 
+        { slug: post.uid},
+      }
+    ));
+
+
   return {
-    paths: [
-      {params: {
-        slug: posts.results[0].uid
-      }}
-    ],
+    paths: postArray,
     fallback: true,
   }
 };
+
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug } = params
@@ -111,23 +116,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('publication', String(slug), {});
 
-
-  const post = {
-    first_publication_date: response.first_publication_date,
-    data: {
-      title: response.data.title,
-      banner: {
-        url: response.data.banner.url,
-      },
-      author: response.data.author,
-      content: response.data.content,
-    },
-  }
-
   return {
     props: {
-      post
+      post: response
     },
-    revalidate: 1, // 1 hour
+    revalidate: 60 * 60, // 1 hour
   }
 };
+
