@@ -118,7 +118,7 @@ export const getStaticProps: GetStaticProps = async () => {
     Prismic.predicates.at('document.type', 'publication')
   ], {
       fetch: ['publication.title', 'publication.subtitle', 'publication.author'],
-      pageSize:2,
+      pageSize:1,
     }
   )
 
@@ -146,7 +146,7 @@ export const getStaticProps: GetStaticProps = async () => {
         next_page,
       },
     },
-    revalidate: 1, // 1 hour
+    revalidate: 1,
   }
 };
 
