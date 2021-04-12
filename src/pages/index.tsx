@@ -17,7 +17,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 
 
 import { useEffect, useState } from 'react';
-import Head from 'next/Head';
+import Head from 'next/head';
 
 interface Post {
   uid?: string;
